@@ -19,6 +19,9 @@ class InputService:
         self._keys = {}
         self._keys[97] = Point(-1, 0) # a
         self._keys[100] = Point(1, 0) # d
+        # TODO: Make arrow keys work
+        self._keys[203] = Point(-1, 0) # <-
+        self._keys[205] = Point(1, 0) # ->
         
     def get_direction(self):
         """Gets the selected direction for the given player.
@@ -33,3 +36,8 @@ class InputService:
                 sys.exit()
             direction = self._keys.get(event.key_code, Point(0, 0))
         return direction
+    
+    def get_key_code(self):
+        event = self._screen.get_event()
+        if isinstance(event, KeyboardEvent):
+            return event.key_code

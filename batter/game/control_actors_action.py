@@ -28,4 +28,6 @@ class ControlActorsAction(Action):
         """
         direction = self._input_service.get_direction()
         paddle = cast.paddle # there's only one in the cast
-        paddle.set_velocity(direction)        
+        paddle.set_velocity(direction)
+        if __debug__:
+            cast.debug = self._input_service.get_key_code() 

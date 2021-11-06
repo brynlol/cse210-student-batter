@@ -23,6 +23,9 @@ def main(screen):
     move_actors_action = MoveActorsAction()
     handle_collisions_action = HandleCollisionsAction()
     draw_actors_action = DrawActorsAction(output_service)
+
+    if __debug__:
+        cast.make_debug(input_service)
     
     script["input"] = [control_actors_action]
     script["update"] = [move_actors_action, handle_collisions_action]

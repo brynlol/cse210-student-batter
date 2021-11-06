@@ -41,6 +41,12 @@ class Cast:
         ball.set_position(position)
         ball.set_velocity(velocity)
         self._ball = ball
+    
+    def make_debug(self, input_serv):
+        self._input = input_serv
+        debug = Actor()
+        debug.set_position(Point(0, 0))
+        self._debug = debug
 
     @property
     def paddle(self):
@@ -56,5 +62,16 @@ class Cast:
     
     @property
     def cast_list(self):
-        formatted_cast = [[self._paddle], [self._ball], self._bricks]
+        if __debug__:
+            formatted_cast = [[self._paddle], [self._ball], self._bricks, [self._debug]]
+        else:
+            formatted_cast = [[self._paddle], [self._ball], self._bricks]
         return formatted_cast
+    
+    @property
+    def debug(self):
+        return self._debug
+    
+    @debug.setter
+    def debug(self, debug):
+        self._debug.set_text(debug)
