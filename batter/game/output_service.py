@@ -23,7 +23,7 @@ class OutputService:
     def clear_screen(self):
         """Clears the Asciimatics buffer for the next rendering.""" 
         self._screen.clear_buffer(7, 0, 0)
-        # self._draw_border()
+        self._draw_border()
     
     def _draw_border(self):
         top_border = '╔' + ("═" * (constants.MAX_X - 1)) + '╗'

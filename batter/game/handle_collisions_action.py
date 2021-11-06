@@ -20,13 +20,10 @@ class HandleCollisionsAction(Action):
         self._paddle = cast.paddle_parts
         self._ball = cast.ball
         self._bricks = cast.bricks
-        self._top = cast.top_parts
-        self._side = cast.side_parts
-        self._bottom = cast.bottom_parts
+        self._check_brick_collision()
         self._check_paddle_collision()
         self._check_top_collision()
         self._check_side_collision()
-        self._check_brick_collision()
         # self._check_bottom_collision()
         
     def _check_brick_collision(self):
@@ -48,19 +45,27 @@ class HandleCollisionsAction(Action):
 
     def _check_top_collision(self):
         projected_pos = self._calc_ball_direction()
-        for top_part in self._top:
-            if top_part.get_position().equals(projected_pos):
+        y = 0
+        for x in range(constants.MAX_X):
+            position = Point(x, y)
+            if position.equals(projected_pos):
                 start_vel = self._ball.get_velocity()
                 end_vel = start_vel.reverse_y()
                 self._ball.set_velocity(end_vel)
 
     def _check_side_collision(self):
         projected_pos = self._calc_ball_direction()
-        for side_part in self._side:
-            if side_part.get_position().equals(projected_pos):
-                start_vel = self._ball.get_velocity()
-                end_vel = start_vel.reverse_x()
-                self._ball.set_velocity(end_vel)
+        for i in range(2):
+            if i == 0:
+                x = 0
+            else:
+                x = constants.MAX_X
+            for y in range(constants.MAX_Y):
+                position = Point(x, y)
+                if position.equals(projected_pos):
+                    start_vel = self._ball.get_velocity()
+                    end_vel = start_vel.reverse_x()
+                    self._ball.set_velocity(end_vel)
 
     def _check_bottom_collision(self):
         projected_pos = self._calc_ball_direction()

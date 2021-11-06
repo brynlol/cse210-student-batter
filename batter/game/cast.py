@@ -11,9 +11,6 @@ class Cast:
         self.setup_paddle()
         self.setup_bricks()
         self.setup_ball()
-        self.setup_top()
-        self.setup_sides()
-        self.setup_bottom()
 
     def setup_paddle(self):
         self._paddle_parts = []
@@ -52,50 +49,6 @@ class Cast:
         ball.set_velocity(velocity)
         self._ball = ball
 
-    def setup_top(self):
-        self._top_parts = []
-        y = 0
-        for x in range(constants.MAX_X):
-            position = Point(x, y)
-            top_part = Actor()
-            if x == 0:
-                top_part.set_text("╔")
-            elif x == constants.MAX_X:
-                top_part.set_text("╗")
-            else:
-                top_part.set_text("═")
-            top_part.set_position(position)
-            self._top_parts.append(top_part)
-
-    def setup_sides(self):
-        self._side_parts = []
-        for i in range(2):
-            if i == 0:
-                x = 0
-            else:
-                x = constants.MAX_X
-            for y in range(1, constants.MAX_Y):
-                position = Point(x, y)
-                side_part = Actor()
-                side_part.set_text("║")
-                side_part.set_position(position)
-                self._side_parts.append(side_part)
-
-    def setup_bottom(self):
-        self._bottom_parts = []
-        y = constants.MAX_Y
-        for x in range(constants.MAX_X):
-            position = Point(x, y)
-            bottom_part = Actor()
-            if x == 0:
-                bottom_part.set_text("╚")
-            elif x == constants.MAX_X:
-                bottom_part.set_text("╝")
-            else:
-                bottom_part.set_text("═")
-            bottom_part.set_position(position)
-            self._bottom_parts.append(bottom_part)
-
     @property
     def paddle_parts(self):
         return self._paddle_parts
@@ -109,20 +62,8 @@ class Cast:
         return self._ball
     
     @property
-    def top_parts(self):
-        return self._top_parts
-
-    @property
-    def side_parts(self):
-        return self._side_parts
-
-    @property
-    def bottom_parts(self):
-        return self._bottom_parts
-
-    @property
     def cast_list(self):
-        formatted_cast = [self._paddle_parts, [self._ball], self._bricks, self._top_parts, self._side_parts, self.bottom_parts]
+        formatted_cast = [self._paddle_parts, [self._ball], self._bricks]
         return formatted_cast
     
     @property
