@@ -13,6 +13,6 @@ class Action:
         """Executes the action using the given actors.
 
         Args:
-            cast (dict): The game actors {key: tag, value: list}.
+            cast (Cast object): The current game actors.
         """
         raise NotImplementedError("execute not implemented in superclass")

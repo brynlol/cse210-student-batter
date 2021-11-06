@@ -24,8 +24,10 @@ class ControlActorsAction(Action):
         """Executes the action using the given actors.
 
         Args:
-            cast (dict): The game actors {key: tag, value: list}.
+            cast (Cast object): The current game actors.
         """
         direction = self._input_service.get_direction()
-        paddle = cast["paddle"][0] # there's only one in the cast
-        paddle.set_velocity(direction)        
+        paddle = cast.paddle # there's only one in the cast
+        paddle.set_velocity(direction)
+        if __debug__:
+            cast.debug = self._input_service.get_key_code() 

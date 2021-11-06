@@ -1,4 +1,5 @@
 from game import constants
+from game.point import Point
 from game.action import Action
 
 class HandleCollisionsAction(Action):
@@ -13,8 +14,34 @@ class HandleCollisionsAction(Action):
         """Executes the action using the given actors.
 
         Args:
-            cast (dict): The game actors {key: tag, value: list}.
+            cast (Cast object): The current game actors.
         """
+        self._paddle = cast.paddle
+        self._ball = cast.ball
+        self._bricks = cast.bricks
+        self._check_brick_collision()
+        
+    def _check_brick_collision(self):
+        projected_pos = self._calc_ball_direction()
+        for brick in self._bricks:
+            if brick.get_position().equals(projected_pos):
+                self._bricks.remove(brick)
+
+    def _calc_ball_direction(self):
+        ball_pos = self._ball.get_position()
+        ball_vel = self._ball.get_velocity()
+        if ball_vel.get_x() < 0:
+            x = -1
+        if ball_vel.get_x() > 0:
+            x = 1
+        if ball_vel.get_y() < 0:
+            y = -1
+        if ball_vel.get_y() > 0:
+            y = 1
+        return ball_pos.add(Point(x, y))
+
+        
+
 
 
 
