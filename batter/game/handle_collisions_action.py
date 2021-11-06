@@ -1,3 +1,4 @@
+import sys
 from game import constants
 from game.point import Point
 from game.action import Action
@@ -11,7 +12,6 @@ class HandleCollisionsAction(Action):
     """
 
     def execute(self, cast):
-        # TODO:
         """Executes the action using the given actors.
 
         Args:
@@ -22,6 +22,9 @@ class HandleCollisionsAction(Action):
         self._bricks = cast.bricks
         self._check_brick_collision()
         self._check_paddle_collision()
+        self._check_top_collision()
+        self._check_side_collision()
+        # self._check_bottom_collision()
         
     def _check_brick_collision(self):
         projected_pos = self._calc_ball_direction()
@@ -40,7 +43,37 @@ class HandleCollisionsAction(Action):
                 end_vel = start_vel.reverse_y()
                 self._ball.set_velocity(end_vel)
 
+    def _check_top_collision(self):
+        projected_pos = self._calc_ball_direction()
+        y = 0
+        for x in range(constants.MAX_X):
+            position = Point(x, y)
+            if position.equals(projected_pos):
+                start_vel = self._ball.get_velocity()
+                end_vel = start_vel.reverse_y()
+                self._ball.set_velocity(end_vel)
 
+    def _check_side_collision(self):
+        projected_pos = self._calc_ball_direction()
+        for i in range(2):
+            if i == 0:
+                x = 0
+            else:
+                x = constants.MAX_X
+            for y in range(constants.MAX_Y):
+                position = Point(x, y)
+                if position.equals(projected_pos):
+                    start_vel = self._ball.get_velocity()
+                    end_vel = start_vel.reverse_x()
+                    self._ball.set_velocity(end_vel)
+
+    def _check_bottom_collision(self):
+        projected_pos = self._calc_ball_direction()
+        for bottom_part in self._bottom:
+            if bottom_part.get_postition().equals(projected_pos):
+                pass
+            else:
+                pass
 
     def _calc_ball_direction(self):
         ball_pos = self._ball.get_position()
@@ -55,18 +88,3 @@ class HandleCollisionsAction(Action):
             y = 1
         return ball_pos.add(Point(x, y))
 
-        
-
-
-
-
-"""Example from RFK:        
-        marquee = cast["marquee"][0] # there's only one
-        robot = cast["robot"][0] # there's only one
-        artifacts = cast["artifact"]
-        marquee.set_text("")
-        for artifact in artifacts:
-            if robot.get_position().equals(artifact.get_position()):
-                description = artifact.get_description()
-                marquee.set_text(description) 
-        """
