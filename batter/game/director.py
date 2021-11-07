@@ -23,6 +23,7 @@ class Director:
         """
         self._cast = cast
         self._script = script
+        self._exit = False
         self._update_active = True
         
     def start_game(self):
@@ -37,12 +38,11 @@ class Director:
         update_t.start()
 
         # Do IO updates on the main thread
-        exit = False
-        while not exit:
-            exit = self._cue_returnable_action('input')
-            if type(exit) is not bool:
-                exit = False
-            if exit:
+        while not self._exit:
+            self._exit = self._cue_returnable_action('input')
+            if type(self._exit) is not bool:
+                self._exit = False
+            if self._exit:
                 break
             self._cue_action('player')
             self._cue_action('output')
@@ -52,14 +52,15 @@ class Director:
         
         # Stop the update thread if it's alive on game exit
         if update_t.is_alive():
-            self._update_active = False
+            self._exit = True
             update_t.join()
 
     def _do_update(self):
         """Preforms game updates for NPCs at a set delay.
         """
-        while self._update_active:
-            self._cue_action('update')
+        while not self._exit:
+            self._cue_action('movement')
+            self._exit = self._cue_returnable_action('collision')
             sleep(constants.FRAME_LENGTH)
 
     def _cue_action(self, tag):
@@ -68,8 +69,7 @@ class Director:
         Args:
             tag (string): The given tag.
         """ 
-        for action in self._script[tag]:
-            action.execute(self._cast)
+        self._script[tag].execute(self._cast)
 
     def _cue_returnable_action(self, tag):
         """Executes the actions with the given tag.
@@ -77,4 +77,4 @@ class Director:
         Args:
             tag (string): The given tag.
         """ 
-        return self._script[tag][0].execute(self._cast)
+        return self._script[tag].execute(self._cast)

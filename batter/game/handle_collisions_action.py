@@ -25,7 +25,8 @@ class HandleCollisionsAction(Action):
         self._check_paddle_collision()
         self._check_top_collision()
         self._check_side_collision()
-        self._check_bottom_collision()
+        alive = self._check_bottom_collision()
+        return alive
         
     def _check_brick_collision(self):
         """ Check if the ball collides with a brick. If it does, remove the brick and divert the ball
@@ -100,6 +101,7 @@ class HandleCollisionsAction(Action):
             position = Point(x, y)
             if position.equals(projected_pos):
                 return True
+        return False
 
     def _calc_ball_direction(self):
         """ Calculate the direction of the ball.
