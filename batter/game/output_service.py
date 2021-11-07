@@ -21,11 +21,20 @@ class OutputService:
         self._screen = screen
         
     def clear_screen(self):
-        """Clears the Asciimatics buffer for the next rendering.""" 
+        """Clears the Asciimatics buffer for the next rendering.
+
+        Args:
+            self (OutputService): An instance of OutputService
+        """ 
         self._screen.clear_buffer(7, 0, 0)
         self._draw_border()
     
     def _draw_border(self):
+        """ Draws the border around the screen.
+        
+        Args:
+            self (OutputService): An instance of OutputService
+        """
         top_border = '╔' + ("═" * (constants.MAX_X - 1)) + '╗'
         bottom_border = '╚' + ("═" * (constants.MAX_X - 1)) + '╝'
         self._screen.print_at(top_border, 0, 0, 7)
@@ -38,6 +47,7 @@ class OutputService:
         """Renders the given actor's text on the screen.
 
         Args:
+            self (OutputService): An instance of OutputService
             actor (Actor): The actor to render.
         """ 
         text = actor.get_text()
@@ -50,11 +60,17 @@ class OutputService:
         """Renders the given list of actors on the screen.
 
         Args:
+            self (OutputService): An instance of OutputService
             actors (list): The actors to render.
         """ 
         for actor in actors:
             self.draw_actor(actor)
     
     def flush_buffer(self):
-        """Renders the screen.""" 
+        """Renders the screen.
+
+        Args:
+            self (OutputService): An instance of OutputService
+        
+        """ 
         self._screen.refresh()    
