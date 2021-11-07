@@ -83,7 +83,6 @@ class Point:
         Returns:
             Point: A new Point that is reversed vertically.
         """
-
         x = self._x
         y = self._y * -1
         return Point(x, y)

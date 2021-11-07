@@ -18,6 +18,7 @@ class ControlActorsAction(Action):
         """The class constructor.
         
         Args:
+            self (ControlActorsAction): An instnace of ControlActorsAction
             input_service (InputService): An instance of InputService.
         """
         self._input_service = input_service
@@ -26,6 +27,7 @@ class ControlActorsAction(Action):
         """Executes the action using the given actors.
 
         Args:
+            self (ControlActorsAction): An instnace of ControlActorsAction
             cast (Cast object): The current game actors.
         """
         try:
@@ -47,6 +49,9 @@ class ControlActorsAction(Action):
     
     def _exit(self):
         """Check whether the button for exiting was pressed.
+
+        Args:
+            self (ControlActorsAction): An instnace of ControlActorsAction
 
         Returns:
             bool: whether exit condition was met

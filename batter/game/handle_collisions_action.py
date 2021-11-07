@@ -15,6 +15,7 @@ class HandleCollisionsAction(Action):
         """Executes the action using the given actors.
 
         Args:
+            self (HandleCollisionsAction): An instance of HandleCollisionsAction
             cast (Cast object): The current game actors.
         """
         self._paddle = cast.paddle_parts
@@ -24,9 +25,14 @@ class HandleCollisionsAction(Action):
         self._check_paddle_collision()
         self._check_top_collision()
         self._check_side_collision()
-        # self._check_bottom_collision()
+        self._check_bottom_collision()
         
     def _check_brick_collision(self):
+        """ Check if the ball collides with a brick. If it does, remove the brick and divert the ball
+        
+        Args:
+            self (HandleCollisionsAction): An instance of HandleCollisionsAction
+        """
         projected_pos = self._calc_ball_direction()
         for brick in self._bricks:
             if brick.get_position().equals(projected_pos):
@@ -36,6 +42,11 @@ class HandleCollisionsAction(Action):
                 self._ball.set_velocity(end_vel)
 
     def _check_paddle_collision(self):
+        """ Check if the ball collides with the paddle. If it does, divert the ball in another direction. 
+                
+        Args:
+            self (HandleCollisionsAction): An instance of HandleCollisionsAction
+        """
         projected_pos = self._calc_ball_direction()
         for paddle_part in self._paddle:
             if paddle_part.get_position().equals(projected_pos):
@@ -44,6 +55,11 @@ class HandleCollisionsAction(Action):
                 self._ball.set_velocity(end_vel)
 
     def _check_top_collision(self):
+        """ Check if the ball collides with the top of the screen. If it does, divert the ball in another direction
+                
+        Args:
+            self (HandleCollisionsAction): An instance of HandleCollisionsAction
+        """
         projected_pos = self._calc_ball_direction()
         y = 0
         for x in range(constants.MAX_X):
@@ -54,6 +70,11 @@ class HandleCollisionsAction(Action):
                 self._ball.set_velocity(end_vel)
 
     def _check_side_collision(self):
+        """ Check if the ball collides with the side of the screen. If it does, divert the ball in another direction
+                
+        Args:
+            self (HandleCollisionsAction): An instance of HandleCollisionsAction
+        """
         projected_pos = self._calc_ball_direction()
         for i in range(2):
             if i == 0:
@@ -68,14 +89,27 @@ class HandleCollisionsAction(Action):
                     self._ball.set_velocity(end_vel)
 
     def _check_bottom_collision(self):
+        """ Check if the ball collides with the bottom of the screen. If it does, exit the game.
+                
+        Args:
+            self (HandleCollisionsAction): An instance of HandleCollisionsAction
+        """
         projected_pos = self._calc_ball_direction()
-        for bottom_part in self._bottom:
-            if bottom_part.get_postition().equals(projected_pos):
-                pass
-            else:
-                pass
+        y = constants.MAX_Y
+        for x in range(constants.MAX_X):
+            position = Point(x, y)
+            if position.equals(projected_pos):
+                return True
 
     def _calc_ball_direction(self):
+        """ Calculate the direction of the ball.
+
+        Args:
+            self (HandleCollisionsAction): An instance of HandleCollisionsAction
+        
+        Returns:
+            point: the point the ball will reach next. An instance of Point.
+         """
         ball_pos = self._ball.get_position()
         ball_vel = self._ball.get_velocity()
         if ball_vel.get_x() < 0:
